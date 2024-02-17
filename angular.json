@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-stracture": {
+    "front-task": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,18 +13,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-stracture",
+            "outputPath": "dist/front-task",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -60,10 +58,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-stracture:build:production"
+              "browserTarget": "front-task:build:production"
             },
             "development": {
-              "browserTarget": "angular-stracture:build:development"
+              "browserTarget": "front-task:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,22 +69,17 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-stracture:build"
+            "browserTarget": "front-task:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -94,5 +87,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "0aa8091f-ff2c-4ec4-9b25-2be9bd41f706"
   }
 }
