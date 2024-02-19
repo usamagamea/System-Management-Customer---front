@@ -1,0 +1,27 @@
+<h2 class="text-bold">Country Form</h2>
+
+<body class="d-flex justify-content-center">
+  <form (ngSubmit)="onSubmit()" [formGroup]="countryForm">
+    <div class="row  w-100">
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Country</mat-label>
+        <input type="text" placeholder="Select Country" aria-label="text" matInput formControlName="name"
+          [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="countryForm.get('name')?.hasError('required')">Country is
+          <strong>required</strong></mat-error>
+      </mat-form-field>
+
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="w-25" mat-raised-button [color]="show ? null : 'primary'"
+          [routerLink]="show ? '/city' : null">
+          {{ show ? 'Next' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</body>

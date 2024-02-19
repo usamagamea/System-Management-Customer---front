@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ClientModule } from './client/customer.module';
+import { ClientModule } from './client/client.module';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({

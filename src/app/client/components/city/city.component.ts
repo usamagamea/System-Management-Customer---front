@@ -12,69 +12,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'city',
-  template: `
-    <h2 class="text-bold">City Form</h2>
-    <body class="d-flex justify-content-center ">
-      <form [formGroup]="cityForm" (ngSubmit)="onSubmit()">
-        <div class="row w-100">
-          <mat-form-field appearance="fill">
-            <mat-label>Country</mat-label>
-            <mat-select matNativeControl formControlName="countryId" required>
-              <mat-option
-                *ngFor="let country of countries"
-                [value]="country.id"
-              >
-                {{ country.name }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="cityForm.get('countryId')?.hasError('required')"
-              >Country is <strong>required</strong></mat-error
-            >
-          </mat-form-field>
-
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>City</mat-label>
-            <input
-              type="text"
-              placeholder="Select City"
-              aria-label="text"
-              matInput
-              formControlName="name"
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              (optionSelected)="onOptionSelected($event)"
-              [displayWith]="displayFn"
-            >
-              <mat-option
-                *ngFor="let option of filteredOptions | async"
-                [value]="option"
-              >
-                {{ option.name }}
-              </mat-option>
-            </mat-autocomplete>
-            <mat-error *ngIf="cityForm.get('name')?.hasError('required')"
-              >City is <strong>required</strong></mat-error
-            >
-          </mat-form-field>
-
-          <div class=" d-flex justify-content-center">
-            <button
-              type="submit"
-              class="w-25"
-              mat-raised-button
-              [color]="show ? null : 'primary'"
-              [routerLink]="show ? '/customer' : null"
-              [disabled]="cityForm.invalid"
-            >
-              {{ show ? 'Next' : 'Save' }}
-            </button>
-          </div>
-        </div>
-      </form>
-    </body>
-  `,
+  templateUrl: './city.component.html',
 })
 export class CityComponent implements OnInit, OnDestroy {
   // DI Start //

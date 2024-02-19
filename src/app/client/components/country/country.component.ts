@@ -10,53 +10,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'country',
-  template: `
-    <h2 class="text-bold">Country Form</h2>
-    <body class="d-flex justify-content-center">
-      <form (ngSubmit)="onSubmit()" [formGroup]="countryForm">
-        <div class="row  w-100">
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Country</mat-label>
-            <input
-              type="text"
-              placeholder="Select Country"
-              aria-label="text"
-              matInput
-              formControlName="name"
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              (optionSelected)="onOptionSelected($event)"
-              [displayWith]="displayFn"
-            >
-              <mat-option
-                *ngFor="let option of filteredOptions | async"
-                [value]="option"
-              >
-                {{ option.name }}
-              </mat-option>
-            </mat-autocomplete>
-            <mat-error *ngIf="countryForm.get('name')?.hasError('required')"
-              >Country is <strong>required</strong></mat-error
-            >
-          </mat-form-field>
-
-          <div class="d-flex justify-content-center">
-            <button
-              type="submit"
-              class="w-25"
-              mat-raised-button
-              [color]="show ? null : 'primary'"
-              [routerLink]="show ? '/city' : null"
-            >
-              {{ show ? 'Next' : 'Save' }}
-            </button>
-          </div>
-        </div>
-      </form>
-    </body>
-  `,
+  templateUrl: './country.component.html',
 })
 export class CountryComponent implements OnInit, OnDestroy {
   // DI Start //
@@ -86,13 +40,12 @@ export class CountryComponent implements OnInit, OnDestroy {
     );
   }
 
-  displayFn(country: CountryDto): string {
+  protected displayFn(country: CountryDto): string {
     return country && country.name ? country.name : '';
   }
 
-  onOptionSelected(event: MatAutocompleteSelectedEvent) {
+  protected onOptionSelected(event: MatAutocompleteSelectedEvent) {
     const selectedCountry: CountryDto = event.option.value;
-    console.log('selected', selectedCountry);
     this.show = selectedCountry.id !== undefined;
   }
   private _filter(name: string): CountryDto[] {
@@ -122,7 +75,7 @@ export class CountryComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit() {
+  protected onSubmit() {
     if (this.countryForm.valid) {
       const data = this.countryForm.value;
       this.subscription.add(
