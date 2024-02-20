@@ -5,4 +5,5 @@ export const CustomerColumns = [
   'phoneNumber',
   'country',
   'city',
+  'actions',
 ];

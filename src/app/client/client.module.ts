@@ -9,6 +9,8 @@ import { CountryComponent } from './components/country/country.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,7 @@ import { RouterModule } from '@angular/router';
     CustomerListComponent,
     CityComponent,
     CountryComponent,
+    DialogComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +31,7 @@ import { RouterModule } from '@angular/router';
     CustomerComponent,
     CustomerListComponent,
     CityComponent,
+    DialogComponent,
     CountryComponent,
   ],
 })

@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'table',
     component: CustomerListComponent,
   },
+  {
+    path: 'customer/:id',
+    component: CustomerComponent,
+  },
 ];
 
 @NgModule({

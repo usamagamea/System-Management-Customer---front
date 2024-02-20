@@ -50,6 +50,22 @@
         <td mat-cell *matCellDef="let row"> {{row.city.name}} </td>
       </ng-container>
 
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Action </th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-mini-fab color="primary" style="margin-right: 15px;" [routerLink]="['/customer', row.id]">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-mini-fab color="warn" (click)="deleteCustomerConfirmation(row.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+
+
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

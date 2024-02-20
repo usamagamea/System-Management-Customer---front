@@ -16,4 +16,14 @@ export class CustomerService {
   getCustomer(): Observable<CustomerDto[]> {
     return this.http.get<CustomerDto[]>(API.CUSTOMER);
   }
+  updateCustomer(customer: CustomerDto): Observable<CustomerDto> {
+    return this.http.put<CustomerDto>(API.CUSTOMER, customer);
+  }
+  deleteCustomer(id: number): Observable<CustomerDto> {
+    return this.http.delete<CustomerDto>(API.DELETE_CUSTOMER(id));
+  }
+
+  getCustomerById(id: number): Observable<CustomerDto> {
+    return this.http.get<CustomerDto>(API.CUSTOMER_BY_ID(id));
+  }
 }
