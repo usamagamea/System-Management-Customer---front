@@ -6,19 +6,14 @@
       <mat-form-field class="example-full-width">
         <mat-label>Name</mat-label>
         <input type="email" matInput formControlName="name" placeholder="Enter Name" />
-        <mat-error>
-        </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <mat-label>Number</mat-label>
         <input type="text" matInput formControlName="phoneNumber" placeholder="Enter Number" />
-        <mat-error></mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <mat-label>Address</mat-label>
         <input type="text" matInput formControlName="address" placeholder="Enter Address" />
-        <mat-error>
-        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Country</mat-label>
@@ -42,8 +37,8 @@
           <strong>required</strong></mat-error>
       </mat-form-field>
       <div class="d-flex justify-content-center">
-        <button type="submit" [disabled]="customerForm.invalid" class="w-25" mat-raised-button color="primary">
-          Save
+        <button type="submit" class="w-25" mat-raised-button color="primary">
+          {{ customerId ? 'Update' : 'Save' }}
         </button>
       </div>
 
