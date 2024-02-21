@@ -34,12 +34,11 @@ export class CustomerComponent implements OnInit, OnDestroy {
   customerId!: number;
   cities!: City[];
 
-  // this.customerId = this.route.snapshot.paramMap.get('id');
   ngOnInit(): void {
     this.loadCountries();
     this.customerId = +this.route.snapshot.paramMap.get('id')!;
     if (this.customerId) {
-      this.onEdit(this.customerId);
+      this.getCustomerById(this.customerId);
       this.loadCountries();
     }
   }
@@ -104,12 +103,11 @@ export class CustomerComponent implements OnInit, OnDestroy {
     );
   }
 
-  private onEdit(id: number) {
+  private getCustomerById(id: number) {
     this.subscription.add(
       this.customerService.getCustomerById(id).subscribe((customer: any) => {
         this.customerDTO = customer;
         this.loadCities(customer.country.id);
-        console.log('customer', customer.city.id);
         this.customerForm.patchValue({
           id: customer.id,
           name: customer.name,

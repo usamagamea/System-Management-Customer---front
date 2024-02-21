@@ -7,8 +7,6 @@ import { CustomerDto } from '../../models/interface/customer';
 import { CustomerColumns } from '../../models/constant/columns';
 import { CustomerService } from '../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
-import { DialogComponent } from '../dialog/dialog.component';
-import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'customer-list',
@@ -24,7 +22,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   // DI Start //
   private readonly customerService = inject(CustomerService);
-  private readonly dialog = inject(MatDialog);
   private readonly toastr = inject(ToastrService);
   // DI End //
 
@@ -44,18 +41,6 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     );
   }
 
-  private openConfirmationDialog() {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      data: {
-        title: 'Delete Confirmation',
-        message: 'Are you sure you want to delete this customer?',
-        confirmLabel: 'Delete',
-        cancelLabel: 'Cancel',
-      },
-    });
-    return dialogRef.afterClosed();
-  }
-
   private deleteCustomer(id: number) {
     this.subscription.add(
       this.customerService.deleteCustomer(id).subscribe({
@@ -67,15 +52,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
     );
   }
 
-  public onDelete(id: number): void {
-    this.openConfirmationDialog().subscribe((confirmed: boolean) => {
-      if (confirmed) {
-        this.deleteCustomer(id);
-      }
-    });
-  }
-
-  deleteCustomerConfirmation(id: number) {
+  protected deleteCustomerConfirmation(id: number) {
     Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this data!',
