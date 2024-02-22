@@ -45,11 +45,11 @@ export class CityComponent implements OnInit, OnDestroy {
     );
   }
 
-  onOptionSelected(event: MatAutocompleteSelectedEvent) {
+  protected onOptionSelected(event: MatAutocompleteSelectedEvent) {
     const selectedCity: City = event.option.value;
     this.show = selectedCity.id !== undefined;
   }
-  displayFn(city: City): string {
+  protected displayFn(city: City): string {
     return city && city.name ? city.name : '';
   }
 
@@ -94,16 +94,29 @@ export class CityComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit() {
-    if (this.cityForm.valid) {
-      const data = this.cityForm.value;
-      this.subscription.add(
-        this.cityService.addCity(data).subscribe(() => {
-          this.toastr.success('City Added Successfully');
+  private addCity(): void {
+    const data = this.cityForm.value;
+    this.subscription.add(
+      this.cityService.addCity(data).subscribe(
+        () => {
+          this.toastr.success(`${data.name} Added Successfully`);
           this.loadCities();
           this.router.navigateByUrl('/customer');
-        })
-      );
+        },
+        (error) => {
+          if (error.status === 409) {
+            // 409 is the status code for conflict (duplicate entry)
+            this.toastr.error(`City with name '${data.name}' already exists.`);
+          } else {
+            this.toastr.error('An error occurred. Please try again later.');
+          }
+        }
+      )
+    );
+  }
+  protected onSubmit(): void {
+    if (this.cityForm.valid) {
+      this.addCity();
     } else {
       this.toastr.error('Please enter felids');
     }

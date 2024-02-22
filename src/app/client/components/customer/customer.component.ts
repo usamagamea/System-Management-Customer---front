@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CustomerService } from '../../services/customer.service';
@@ -23,12 +23,12 @@ export class CustomerComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly FB = inject(FormBuilder);
   private readonly router = inject(Router);
-  // DI End//
+  // DI End //
   subscription: Subscription = new Subscription();
   customerForm: FormGroup = this.initForm();
+  customerModel!: Customer[];
   countries!: CountryDto[];
   customer!: CustomerDto;
-  customerDTO!: Customer[];
   selectedValue!: number;
   customerId!: number;
   cities!: City[];
@@ -85,7 +85,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
   private getCustomerById(id: number) {
     this.subscription.add(
       this.customerService.getCustomerById(id).subscribe((customer: any) => {
-        this.customerDTO = customer;
+        this.customerModel = customer;
         this.loadCities(customer.country.id);
         this.customerForm.patchValue({
           id: customer.id,

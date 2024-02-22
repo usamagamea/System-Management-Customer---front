@@ -14,10 +14,10 @@ import { Router } from '@angular/router';
 })
 export class CountryComponent implements OnInit, OnDestroy {
   // DI Start //
-  private readonly router = inject(Router);
-  private readonly fb = inject(FormBuilder);
-  private readonly toastr = inject(ToastrService);
   private readonly countryService = inject(CountryService);
+  private readonly toastr = inject(ToastrService);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
   // DI End //
   matcher: MyErrorStateMatcher = new MyErrorStateMatcher();
   subscription: Subscription = new Subscription();
@@ -29,7 +29,6 @@ export class CountryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadCountries();
   }
-
   private filterOptions() {
     this.filteredOptions = this.countryForm.valueChanges.pipe(
       startWith(''),
@@ -39,8 +38,7 @@ export class CountryComponent implements OnInit, OnDestroy {
       })
     );
   }
-
-  protected displayFn(country: CountryDto): string {
+  protected displayFn(country: CountryDto) {
     return country && country.name ? country.name : '';
   }
 
@@ -75,16 +73,31 @@ export class CountryComponent implements OnInit, OnDestroy {
     });
   }
 
-  protected onSubmit() {
-    if (this.countryForm.valid) {
-      const data = this.countryForm.value;
-      this.subscription.add(
-        this.countryService.addCountry(data).subscribe(() => {
-          this.toastr.success('Country Added successfully');
+  private AddCountry(): void {
+    const data = this.countryForm.value;
+    this.subscription.add(
+      this.countryService.addCountry(data).subscribe(
+        () => {
+          this.toastr.success(`${data.name} Added Successfully`);
           this.loadCountries();
           this.router.navigateByUrl('/city');
-        })
-      );
+        },
+        (error) => {
+          if (error.status === 409) {
+            // 409 is the status code for conflict (duplicate entry)
+            this.toastr.error(
+              `Country with name '${data.name}' already exists.`
+            );
+          } else {
+            this.toastr.error('An error occurred. Please try again later.');
+          }
+        }
+      )
+    );
+  }
+  protected onSubmit(): void {
+    if (this.countryForm.valid) {
+      this.AddCountry();
     } else {
       this.toastr.error('Please enter a country');
     }
