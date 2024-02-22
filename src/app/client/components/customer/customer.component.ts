@@ -122,14 +122,29 @@ export class CustomerComponent implements OnInit, OnDestroy {
   }
 
   protected onSubmit() {
-    if (this.customerForm.valid) {
+    const form = this.customerForm;
+    if (form.valid) {
       if (this.customerId) {
         this.editCustomer();
       } else {
         this.addCustomer();
       }
     } else {
-      this.toastr.error('Please enter fields');
+      // Display error messages for invalid control
+      const excludedControls = ['countryId', 'cityId'];
+      Object.keys(form.controls).forEach((controlName) => {
+        if (excludedControls.includes(controlName)) {
+          return;
+        }
+        const control = form.controls[controlName];
+        if (control.invalid && control.errors) {
+          Object.keys(control.errors).forEach((errorName) => {
+            if (errorName === 'required') {
+              this.toastr.error(`${controlName} is required`);
+            }
+          });
+        }
+      });
     }
   }
 
