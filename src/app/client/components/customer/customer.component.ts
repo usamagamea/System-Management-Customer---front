@@ -20,10 +20,9 @@ export class CustomerComponent implements OnInit, OnDestroy {
   private readonly countryService = inject(CountryService);
   private readonly cityService = inject(CityService);
   private readonly toastr = inject(ToastrService);
-
+  private readonly route = inject(ActivatedRoute);
   private readonly FB = inject(FormBuilder);
   private readonly router = inject(Router);
-  constructor(private route: ActivatedRoute) {}
   // DI End//
   subscription: Subscription = new Subscription();
   customerForm: FormGroup = this.initForm();
@@ -37,11 +36,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadCountries();
     this.getCustomerDetails();
-  }
-
-  private getCustomerDetails() {
-    this.customerId = +this.route.snapshot.paramMap.get('id')!;
-    this.getCustomerById(this.customerId);
   }
 
   private initForm(): FormGroup {
@@ -84,6 +78,27 @@ export class CustomerComponent implements OnInit, OnDestroy {
     this.loadCities(this.selectedValue);
   }
 
+  private getCustomerDetails() {
+    this.customerId = +this.route.snapshot.paramMap.get('id')!;
+    this.getCustomerById(this.customerId);
+  }
+  private getCustomerById(id: number) {
+    this.subscription.add(
+      this.customerService.getCustomerById(id).subscribe((customer: any) => {
+        this.customerDTO = customer;
+        this.loadCities(customer.country.id);
+        this.customerForm.patchValue({
+          id: customer.id,
+          name: customer.name,
+          phoneNumber: customer.phoneNumber,
+          address: customer.address,
+          countryId: customer.country.id,
+          cityId: customer.city.id,
+        });
+      })
+    );
+  }
+
   private addCustomer() {
     const data = this.customerForm.value;
     this.subscription.add(
@@ -100,23 +115,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
       this.customerService.updateCustomer(data).subscribe(() => {
         this.toastr.info(`${data.name} Updated successfully`);
         this.router.navigateByUrl('/table');
-      })
-    );
-  }
-
-  private getCustomerById(id: number) {
-    this.subscription.add(
-      this.customerService.getCustomerById(id).subscribe((customer: any) => {
-        this.customerDTO = customer;
-        this.loadCities(customer.country.id);
-        this.customerForm.patchValue({
-          id: customer.id,
-          name: customer.name,
-          phoneNumber: customer.phoneNumber,
-          address: customer.address,
-          countryId: customer.country.id,
-          cityId: customer.city.id,
-        });
       })
     );
   }
