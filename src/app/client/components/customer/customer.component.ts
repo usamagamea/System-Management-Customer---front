@@ -36,11 +36,12 @@ export class CustomerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadCountries();
+    this.getCustomerDetails();
+  }
+
+  private getCustomerDetails() {
     this.customerId = +this.route.snapshot.paramMap.get('id')!;
-    if (this.customerId) {
-      this.getCustomerById(this.customerId);
-      this.loadCountries();
-    }
+    this.getCustomerById(this.customerId);
   }
 
   private initForm(): FormGroup {
@@ -87,7 +88,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     const data = this.customerForm.value;
     this.subscription.add(
       this.customerService.addCustomer(data).subscribe(() => {
-        this.toastr.success('Customer Added successfully');
+        this.toastr.success(`${data.name} Added successfully`);
         this.router.navigateByUrl('/table');
       })
     );
@@ -97,7 +98,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
     data.id = this.customerId;
     this.subscription.add(
       this.customerService.updateCustomer(data).subscribe(() => {
-        this.toastr.info('Customer Updated successfully');
+        this.toastr.info(`${data.name} Updated successfully`);
         this.router.navigateByUrl('/table');
       })
     );
