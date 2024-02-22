@@ -130,7 +130,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
         this.addCustomer();
       }
     } else {
-      // Display error messages for invalid control
       const excludedControls = ['countryId', 'cityId'];
       Object.keys(form.controls).forEach((controlName) => {
         if (excludedControls.includes(controlName)) {
