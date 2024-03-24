@@ -21,8 +21,8 @@ export class CustomerListComponent implements OnInit, OnDestroy {
   customer!: CustomerDto;
 
   // DI Start //
-  private readonly customerService = inject(CustomerService);
-  private readonly toastr = inject(ToastrService);
+  readonly #customerService = inject(CustomerService);
+  readonly #toastr = inject(ToastrService);
   // DI End //
 
   ngOnInit(): void {
@@ -31,7 +31,7 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   private getCustomerList() {
     this.subscription.add(
-      this.customerService.getCustomer().subscribe({
+      this.#customerService.getCustomer().subscribe({
         next: (res: CustomerDto[]) => {
           this.dataSource = new MatTableDataSource(res);
           this.dataSource.sort = this.sort;
@@ -43,9 +43,9 @@ export class CustomerListComponent implements OnInit, OnDestroy {
 
   private deleteCustomer(id: number) {
     this.subscription.add(
-      this.customerService.deleteCustomer(id).subscribe({
+      this.#customerService.deleteCustomer(id).subscribe({
         next: (res: CustomerDto) => {
-          this.toastr.warning(`Deleted Successfully`);
+          this.#toastr.warning(`Deleted Successfully`);
           this.getCustomerList();
         },
       })

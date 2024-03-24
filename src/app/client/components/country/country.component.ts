@@ -14,10 +14,10 @@ import { Router } from '@angular/router';
 })
 export class CountryComponent implements OnInit, OnDestroy {
   // DI Start //
-  private readonly countryService = inject(CountryService);
-  private readonly toastr = inject(ToastrService);
-  private readonly fb = inject(FormBuilder);
-  private readonly router = inject(Router);
+  readonly #countryService = inject(CountryService);
+  readonly #toastr = inject(ToastrService);
+  readonly #fb = inject(FormBuilder);
+  readonly #router = inject(Router);
   // DI End //
   matcher: MyErrorStateMatcher = new MyErrorStateMatcher();
   subscription: Subscription = new Subscription();
@@ -55,20 +55,20 @@ export class CountryComponent implements OnInit, OnDestroy {
   }
   private loadCountries() {
     this.subscription.add(
-      this.countryService.getCountry().subscribe(
+      this.#countryService.getCountry().subscribe(
         (countries: CountryDto[]) => {
           this.countries = countries;
           this.filterOptions();
         },
         (error) => {
-          this.toastr.error('Failed to load countries', error);
+          this.#toastr.error('Failed to load countries', error);
         }
       )
     );
   }
 
   private initForm(): FormGroup {
-    return this.fb.group({
+    return this.#fb.nonNullable.group({
       name: [null, [Validators.required]],
     });
   }
@@ -76,20 +76,20 @@ export class CountryComponent implements OnInit, OnDestroy {
   private AddCountry(): void {
     const data = this.countryForm.value;
     this.subscription.add(
-      this.countryService.addCountry(data).subscribe(
+      this.#countryService.addCountry(data).subscribe(
         () => {
-          this.toastr.success(`${data.name} Added Successfully`);
+          this.#toastr.success(`${data.name} Added Successfully`);
           this.loadCountries();
-          this.router.navigateByUrl('/city');
+          this.#router.navigateByUrl('/city');
         },
         (error) => {
           if (error.status === 409) {
             // 409 is the status code for conflict (duplicate entry)
-            this.toastr.error(
+            this.#toastr.error(
               `Country with name '${data.name}' already exists.`
             );
           } else {
-            this.toastr.error('An error occurred. Please try again later.');
+            this.#toastr.error('An error occurred. Please try again later.');
           }
         }
       )
@@ -99,7 +99,7 @@ export class CountryComponent implements OnInit, OnDestroy {
     if (this.countryForm.valid) {
       this.AddCountry();
     } else {
-      this.toastr.error('Please enter a country');
+      this.#toastr.error('Please enter a country');
     }
   }
 
